@@ -9,6 +9,7 @@ from __future__ import division
 
 import heapq
 import pickle
+import math
 
 import os
 
@@ -43,9 +44,7 @@ class PriorityQueue(object):
         Returns:
             The node with the highest priority.
         """
-
-        # TODO: finish this function!
-        raise NotImplementedError
+        return heapq.heappop(self.queue)
 
     def remove(self, node_id):
         """Remove a node from the queue.
@@ -57,8 +56,7 @@ class PriorityQueue(object):
         Args:
             node_id (int): Index of node in queue.
         """
-
-        raise NotImplementedError
+        self.queue.remove(node_id)
     
     def __iter__(self):
         """Queue iterator.
@@ -74,13 +72,23 @@ class PriorityQueue(object):
 
     def append(self, node):
         """Append a node to the queue.
-
+        
         Args:
             node: Comparable Object to be added to the priority queue.
         """
+        heapq.heappush(self.queue,node)
 
-        # TODO: finish this function!
-        raise NotImplementedError
+    def peek(self,node_id):
+        return self.queue[node_id]
+
+    def find(self,key):
+        iter=0
+        for k in self.queue:
+            if(k[1]==key):
+                return iter
+            iter+=1
+        return None
+
 
     def __contains__(self, key):
         """Containment Check operator for 'in'
@@ -131,6 +139,21 @@ class PriorityQueue(object):
         return self.queue[0]
 
 
+def Solution(node):
+    """This formulates a path list and depends that
+    the third value of the triple node is the node's
+    parent
+    """
+
+    s = list()
+    s.append(node[1])
+    n = node[2]
+    while(n is not None):
+        s.append(n[1])
+        n = n[2]
+    s.reverse()
+    return s
+
 def breadth_first_search(graph, start, goal):
     """Warm-up exercise: Implement breadth-first-search.
 
@@ -145,9 +168,39 @@ def breadth_first_search(graph, start, goal):
         The best path as a list from the start and goal nodes (including both).
     """
 
-    # TODO: finish this function!
-    raise NotImplementedError
+    if (start == goal): return []
+    treeNode = (0,start,None)
+    node=start
 
+    frontierNodes = dict()
+    frontier = list()
+    explored = set()
+
+    frontierNodes[start]=treeNode
+    frontier.append(node)
+    # print("Start: %s") %(start)
+
+    while (len(frontier)>0):
+        node = frontier.pop(0)
+        treeNode = frontierNodes[node]
+        explored.add(node)
+        children = graph[node]
+        for child in children:
+            childNode=(treeNode[0]+1,child,treeNode)
+            if(child == goal): 
+                return Solution(childNode) 
+            if(child not in explored and child not in frontier):
+                print("Adding: %s") %(child)
+ #               childNode=(treeNode[0]+1,child,treeNode)
+                frontier.append(child)
+                frontierNodes[child]=childNode
+            elif(child in frontier):              
+                if((treeNode[0]+1) < frontierNodes[child][0]):
+                    print("Replacing: %s") %(child)
+ #                   childNode=(treeNode[0]+1,child,treeNode)
+                    frontierNodes[child]=childNode
+
+    return None
 
 def uniform_cost_search(graph, start, goal):
     """Warm-up exercise: Implement uniform_cost_search.
@@ -163,8 +216,28 @@ def uniform_cost_search(graph, start, goal):
         The best path as a list from the start and goal nodes (including both).
     """
 
-    # TODO: finish this function!
-    raise NotImplementedError
+    if (start == goal): return []
+    node = (0,start,None)
+
+    frontier = PriorityQueue()
+    explored = set()
+
+    frontier.append(node)
+    # print("Start: %s") %(start)
+
+    while (frontier.size>0):
+        node = frontier.pop()
+        if(node[1] == goal): 
+            return Solution(node) 
+        explored.add(node[1])
+        children = graph[node[1]]
+        for child in children:
+            if(child not in explored):
+                # print("Adding: %s") %(child)
+                h = node[0] + children[child]['weight']
+                childNode=(h,child,node)
+                frontier.append(childNode)
+    return None
 
 
 def null_heuristic(graph, v, goal ):

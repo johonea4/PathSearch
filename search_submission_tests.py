@@ -57,8 +57,8 @@ class TestBasicSearch(unittest.TestCase):
 
     def test_ucs(self):
         """TTest and visualize uniform-cost search"""
-        start = 'a'
-        goal = 'u'
+        start = 'o'
+        goal = 'n'
 
         node_positions = {n: self.romania.node[n]['pos'] for n in
                           self.romania.node.keys()}
