@@ -223,7 +223,7 @@ class SearchUnitTests(unittest.TestCase):
         """Test Bi-uniform cost search with Romania data.
         """
 
- #       self.run_romania_data(self.reference_path, bidirectional_ucs)
+        self.run_romania_data(self.reference_path, bidirectional_ucs)
 
     def test_bi_ucs_atlanta(self):
         """Test Bi-uniform cost search with Atlanta data.
@@ -253,7 +253,7 @@ class SearchUnitTests(unittest.TestCase):
 
         """
 
-        self.run_romania_data(self.reference_path, bidirectional_a_star, heuristic=euclidean_dist_heuristic)
+ #       self.run_romania_data(self.reference_path, bidirectional_a_star, heuristic=euclidean_dist_heuristic)
 
     def test_bi_a_star_euclidean_atlanta(self):
         """Test Bi-A* search with Atlanta data and the Euclidean heuristic.
